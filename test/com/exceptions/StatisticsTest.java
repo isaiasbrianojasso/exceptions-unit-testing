@@ -32,7 +32,7 @@ public class StatisticsTest {
     }
 
     @Test
-    public void given2StudentsAddedToAGroup_whenGetStudents_thenListHasTwoElements() {
+    public void given2StudentsAddedToAGroup_whenGetStudents_thenListHasTwoElements() throws GroupOccupancyExceededException {
         // Given:
         Student juan = new Student("Juan", "97249");
         Student ana = new Student("Ana", "98257");
@@ -58,18 +58,34 @@ public class StatisticsTest {
         Student lucia = new Student("Ana", "92556");
         Group group = new Group(3);
 
-        group.add(juan);
-        group.add(ana);
-        group.add(mario);
+        try {
+            group.add(juan);
+        } catch (GroupOccupancyExceededException e) {
+            e.printStackTrace();
+        }
+        try {
+            group.add(ana);
+        } catch (GroupOccupancyExceededException e) {
+            e.printStackTrace();
+        }
+        try {
+            group.add(mario);
+        } catch (GroupOccupancyExceededException e) {
+            e.printStackTrace();
+        }
 
         // When:
-        group.add(lucia);
+        try {
+            group.add(lucia);
+        } catch (GroupOccupancyExceededException e) {
+            e.printStackTrace();
+        }
 
         // Then: GroupOccupancyExceededException was thrown
     }
 
     @Test(expected = GroupOccupancyExceededException.class)
-    public void givenOccupancyOf3_whenStudentsDuplicatedAdded_thenStudentIsNotDuplicatedOnGroup() {
+    public void givenOccupancyOf3_whenStudentsDuplicatedAdded_thenStudentIsNotDuplicatedOnGroup() throws GroupOccupancyExceededException {
         // Given:
         Student juan = new Student("Juan", "97249");
         Student ana = new Student("Ana", "98257");
@@ -90,7 +106,7 @@ public class StatisticsTest {
     }
 
     @Test
-    public void givenStudentsWithGrade_whenAverageIsRequested_thenAverageIsRetrieved() {
+    public void givenStudentsWithGrade_whenAverageIsRequested_thenAverageIsRetrieved() throws GroupOccupancyExceededException {
         // Given:
         Student juan = new Student("Juan", "97249");
         Student ana = new Student("Ana", "98257");
@@ -113,7 +129,7 @@ public class StatisticsTest {
     }
 
     @Test(expected = MissedGradeException.class)
-    public void givenNotAllStudentsWithGrade_whenAverageIsRequested_thenExceptionIsThrown() {
+    public void givenNotAllStudentsWithGrade_whenAverageIsRequested_thenExceptionIsThrown() throws GroupOccupancyExceededException {
         // Given:
         Student juan = new Student("Juan", "97249");
         Student ana = new Student("Ana", "98257");
